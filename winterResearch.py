@@ -81,10 +81,10 @@ def plotSubGraph(time,day_i,audio,time_s):
     end = ((time+1) * 8 * 3)
     start_p = 0;
     for u in range(0,(len(byte))):
-    if ts[u] == indicators_x[start]:
-        start_p = u
-    if ts[u] == indicators_x[end-1]:
-        end_p = u
+        if ts[u] == indicators_x[start]:
+            start_p = u
+        if ts[u] == indicators_x[end-1]:
+            end_p = u
     byte = byte[start_p:end_p + 10]
     ts = ts[start_p:end_p + 10]
     indicators_x = indicators_x[start:end]
