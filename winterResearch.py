@@ -25,7 +25,7 @@ def myDTW(s1, s2):
     return opt[n][m]
 
 ## Method used for reading Json File, output is an array of byte, an array of timestamp,
-## an array of timestamp indicating when we called the application.
+## an array of timestamp indicating when we called the application (indicator_x).
 def readJson(data_file,time_stamp_file):
     weather =[]
     time_stamp = []
@@ -190,9 +190,6 @@ def plot_std(mu,sigma,index,out,filter):
     question.append("What is the weather today")
     question.append("What time is it")
     question.append("Distance from Paris")
-    # out.sort()
-    # pdf = stats.norm.pdf(out, mu, sigma)
-    # plt.plot(out, pdf, color=color[index], label=question[index])
     x = np.linspace(mu - 3 * sigma, mu + 3 * sigma, 100)
     plt.plot(x, stats.norm.pdf(x, mu, sigma),color = color[index], label = question[index])
 
@@ -246,9 +243,6 @@ def givePrediction_DTW(q1, q2, q3, val):
     model_1 = myDTW(q1,val)
     model_2 = myDTW(q2, val)
     model_3 = myDTW(q3, val)
-    # model_1 = tslearn.metrics.dtw(q1,val)
-    # model_2 = tslearn.metrics.dtw(q2, val)
-    # model_3 = tslearn.metrics.dtw(q3, val)
     min_num = min(model_1,model_2,model_3)
     if model_1 == min_num:
         return 0
@@ -543,25 +537,9 @@ def IdentifyThroughDTW(byte,ts,indicators_x,time_window_1,time_window_2,time_win
     c_1,c_2,c_3 = count_correct(correct_q1, correct_q2, correct_q3, q3)
     print("Identify as Q3 but belong to q1 " + str(c_1) + " to q2 " + str(c_2) + " to q3 " + str(c_3))
 
-# ts_2 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54]
-# byte_2 = [10,5,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,30,5,2,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,1,0,0,0,0,0,0,0,37,4,2,0,0]
-# indicators_x = [0,10,20,30,40,50]
-# ts = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64]
-# byte = [0,0,0,0,0,10,5,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,30,5,2,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,3,1,0,0,0,0,0,0,0,37,4,2,0,0,0,0,0,0,0]
-#
-# ##[0,0,0,0,0,||10,5,0,0,0,|||||0,0,0,0,0||||||,0,3,0,0,0|||||,0,0,0,0,0,||||||30,5,2,0,0,|||||||0,0,0,0,0||||||,0,0,12,0,0|||||||,0,0,0,0,0,0,3,1,0,0,0,0,0,0,0,37,4,2,0,0,0,0,0,0,0]
-#
-# print(tslearn.metrics.dtw([5,2,6,0,0], [0,30,5,2,0,0]))
-# print(tslearn.metrics.dtw([0,30,5,2,0,0],[30,5,2,0,0]))
-# indicators_x = [5,15,25,35,45,55]
-
-
 plt.style.use('seaborn-whitegrid')
-
-
 ##reading the file
 ts,byte,indicators_x,indicators_y,max_num= readFile("Audio_Data/SUM/15hours_time_stamp.txt", "Audio_Data/SUM/15hours_package_size.txt","Audio_Data/SUM/ts_3.txt")
-
 ##Getting the std, mean, total packet 10 seconds after the initial call for each of the three questions.
 a_1,b_1,temp_1,time_window_1 = find_Stats(0,byte,ts,indicators_x, block_range= 10)
 a_f_1, b_f_1 = filter_outlier(temp_1)
